@@ -32,6 +32,12 @@ class BulckCalc:
         lines = txt_block.strip().splitlines()
         results = BulckCalc.process_lines_list(lines=lines)
         return results
+
+    @staticmethod
+    def process_line(line: str) -> int:
+        el1, op_sign, el2 = BulckCalc.parse_opt_val(line)
+        res = BulckCalc().dispatch_exp(el1, op_sign, el2)
+        return res
     
     @staticmethod
     def process_lines_list(lines: List[str]) -> List[int]:
@@ -96,7 +102,24 @@ def test_calc_direct_data():
     # actual_results: List[int] = proc.process_bulck(txt_block)
     assert actual_results == expected_results
     # name: type = list of size as lines where each item is tuple prev, next
-    
+
+def run_repl():
+    import sys
+    in_fp = sys.stdin
+    ou_fp = sys.stdout
+    calc_proc = BulckCalc()
+    for line in in_fp:
+        sline = line.strip()
+        if sline == "":
+            continue
+        if sline[0] == "###__BREAK__":
+            break
+        if sline[0] == "#":
+            continue
+        res = calc_proc.process_line(line)
+        ou_fp.write(f"{res}\n")
+       
+
 # === Common Code ===
 
 
@@ -107,6 +130,7 @@ def main():
         import ipdb
         ipdb.set_trace()
     test_calc_direct_data()
+    run_repl()
     # run_medium_test_suite()
 
 
