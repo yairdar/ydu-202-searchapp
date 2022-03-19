@@ -166,6 +166,11 @@ def run_medium_test_suite():
 
 
 def main():
+    import os
+    is_debug = bool(os.getenv('DEBUG_CALC'))
+    if is_debug:
+        import ipdb
+        ipdb.set_trace()
     test_sute_minimal()
     run_medium_test_suite()
 
