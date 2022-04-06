@@ -14,8 +14,6 @@ tasks:
     
   setup-dev-venv:
     desc: setup developer environment
-    vars:
-      dev_venv: nostro-java-parent-env
     cmds:
     - conda create -y  -n {{.dev_venv}} python=3.9 pip pdm
     status:
@@ -24,4 +22,4 @@ tasks:
   show-dev-venv-activate:
     desc: _
     cmds:
-      - echo conda activate nostro-java-parent-env
+      - echo conda activate {{.dev_venv}}
