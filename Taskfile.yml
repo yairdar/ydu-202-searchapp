@@ -1,0 +1,27 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+  dev_venv: ydu-202-searchapp-env
+  
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+    
+  setup-dev-venv:
+    desc: setup developer environment
+    vars:
+      dev_venv: nostro-java-parent-env
+    cmds:
+    - conda create -y  -n {{.dev_venv}} python=3.9 pip pdm
+    status:
+    - conda run -n {{.dev_venv}} pwd
+
+  show-dev-venv-activate:
+    desc: _
+    cmds:
+      - echo conda activate nostro-java-parent-env
