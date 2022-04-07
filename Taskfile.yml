@@ -39,5 +39,12 @@ tasks:
     cmds:
     - pytest -s -v tests
 
-  
+  run-server-here:
+    desc: run server
+    cmds:
+    - python searchup/sup_cli.py start-server
+
+  run-server:
+    desc: run server from top
+    cmds: [{task: run-server-here}]
   
