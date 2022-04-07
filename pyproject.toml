@@ -3,7 +3,7 @@ name = "searchup"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "yairdardev", email = "yairvdar@gmail.com"},
+    {name = "yairdardev", email = "yairdardev@yairdar.com"},
 ]
 license-expression = "MIT"
 dependencies = [
