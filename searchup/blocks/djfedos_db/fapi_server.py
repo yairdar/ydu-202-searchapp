@@ -34,11 +34,18 @@ _impl_db = DjfedosDbFacade()
 def read_root():
     res =  {
         "msg": {"Hello": "World"},
-        "menu": [
-            "/load_db/path-to-file",
-            "/add_to_db/token",
-            "/get_suggestions/prefix",
-        ]
+        "menu": {
+            "recreate": [
+              "/load_db/searchup/blocks/djfedos_db/2466_tokens.txt",
+            ],
+            "update": [
+              "/add_to_db/token1",
+              "/add_to_db/token2",
+            ],
+            "query":[
+              "/get_suggestions/token",
+            ]
+        }
     }
     return res
 
@@ -68,7 +75,7 @@ def read_item(item_id: int):
 
 
 def main():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=18000)
 
 
 if __name__ == "__main__":
