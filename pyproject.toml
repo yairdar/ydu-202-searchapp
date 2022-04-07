@@ -6,7 +6,9 @@ authors = [
     {name = "yairdardev", email = "yairvdar@gmail.com"},
 ]
 license-expression = "MIT"
-dependencies = []
+dependencies = [
+    "fastapi>=0.75.1",
+]
 requires-python = ">=3.8"
 
 [project.urls]
