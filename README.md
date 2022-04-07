@@ -5,6 +5,10 @@
 > - Develop on [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/) 
 > - `direct_link:` https://www.gitpod.io/#https://github.com/ydzvulon/tasker
 
+## Overview
+
+- `devpod` is drop-in to setup developer environments
+- `docs` is a documantion and tutorials directory
 
 ## Sample Project in python
 
