@@ -23,3 +23,21 @@ tasks:
     desc: _
     cmds:
       - echo conda activate {{.dev_venv}}
+
+  dev_init:
+    desc: init developer mode
+    cmds:
+    - pdm install
+
+  test:
+    desc: run prebuild tests
+    cmds:
+    - pdm run task test-here
+
+  test-here:
+    desc: run prebuild tests
+    cmds:
+    - pytest -s -v tests
+
+  
+  
