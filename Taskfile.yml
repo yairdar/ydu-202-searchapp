@@ -3,13 +3,12 @@
 version: '3'
 
 vars:
-  GREETING: Hello, World!
   dev_venv: ydu-202-searchapp-env
   
 tasks:
   default:
     cmds:
-      - echo "{{.GREETING}}"
+      - task -l
     silent: true
     
   setup-dev-venv:
@@ -20,9 +19,11 @@ tasks:
     - conda run -n {{.dev_venv}} pwd
 
   show-dev-venv-activate:
-    desc: _
+    desc: |-
+      print command that activates venv. 
+                              use in shell $(task show-dev-venv-activate)
     cmds:
-      - echo conda activate {{.dev_venv}}
+    - echo conda activate {{.dev_venv}}
 
   dev_init:
     desc: init developer mode
@@ -32,19 +33,19 @@ tasks:
   test:
     desc: run prebuild tests
     cmds:
-    - pdm run task test-here
+    - task: test-here
 
   test-here:
-    desc: run prebuild tests
+    desc: run prebuild tests in active venv
     cmds:
     - pytest -s -v tests
 
   run-server-here:
-    desc: run server
+    desc: run server in active venv
     cmds:
     - python searchup/sup_cli.py start-server
 
   run-server:
-    desc: run server from top
+    desc: run server in pdm __pypackages__
     cmds: [{task: run-server-here}]
   
