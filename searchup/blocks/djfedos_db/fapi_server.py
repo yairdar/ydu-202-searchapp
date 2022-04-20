@@ -1,7 +1,7 @@
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI
-from searchup.blocks.djfedos_db import lib_search_sdk
+import lib_search_sdk
 
 app = FastAPI()
 
