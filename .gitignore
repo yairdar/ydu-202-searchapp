@@ -133,3 +133,5 @@ dmypy.json
 
 # lang.py.pdm
 .pdm.toml
+
+.idea

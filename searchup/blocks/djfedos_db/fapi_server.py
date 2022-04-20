@@ -1,7 +1,7 @@
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI
-from searchup.blocks.djfedos_db import lib_search_sdk
+import lib_search_sdk
 
 app = FastAPI()
 
@@ -36,7 +36,7 @@ def read_root():
         "msg": {"Hello": "World"},
         "menu": {
             "recreate": [
-              "/load_db/searchup/blocks/djfedos_db/2466_tokens.txt",
+              "/load_db/2466_tokens.txt",
             ],
             "update": [
               "/add_to_db/token1",
