@@ -36,7 +36,7 @@ def read_root():
         "msg": {"Hello": "World"},
         "menu": {
             "recreate": [
-              "/load_db/searchup/blocks/djfedos_db/2466_tokens.txt",
+              "/load_db/2466_tokens.txt",
             ],
             "update": [
               "/add_to_db/token1",
