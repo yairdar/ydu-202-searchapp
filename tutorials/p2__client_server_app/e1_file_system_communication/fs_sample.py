@@ -2,7 +2,7 @@ import time
 from pathlib import Path
 
 
-def client(file_com = "com1.txt"):
+def client(file_com = "com_channel101.txt"):
     pp = Path(file_com)
     while True:
         cmd = input("Input text")
@@ -14,7 +14,7 @@ def client(file_com = "com1.txt"):
             pp.write_text(cmd)
             
 
-def server(file_com = "com1.txt"):
+def server(file_com = "com_channel101.txt"):
     
     pp = Path(file_com)
     
