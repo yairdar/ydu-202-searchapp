@@ -1,10 +1,4 @@
 
-# from pathlib import Path
-# import sys
-# _me_parent = Path(__file__).absolute().parent.parent
-# sys.path.append(_me_parent)
-
-
 
 def test_read_root():
     # arrange
@@ -32,12 +26,9 @@ def test_load_db():
     # act
     response = client.get("/load_db/2466_tokens.txt")
     data = response.json()
-    # print("\n client: path is " + data["path"])
-    # print("\n client: len is " + str(data["len"]))
 
     # assert
     assert response.status_code == 200
-    # assert data["path"] == "data/tokens1.txt"
     assert data["len"] == 26
 
 
@@ -64,29 +55,6 @@ def test_add_to_db():
     response = client.get("/get_suggestions/" + token1)
     data = response.json()
     assert token1 in data["result"]
-
-
-    # # test for adding 2nd token that start with same char
-    # # act
-    # response = client.get("/add_to_db/" + token2)
-    # data = response.json()
-  
-    # # assert
-    # assert response.status_code == 200
-    # assert data["token"] == token2
-    # assert data["len"] == 1
-
-    # # test for adding 3rd token that start with different char
-    # # act
-    # response = client.get("/add_to_db/" + token3)
-    # data = response.json()
-  
-    # # assert
-    # assert response.status_code == 200
-    # assert data["token"] == token3
-    # assert data["len"] == 2
-
-
     
 
 def test_get_suggestions():
