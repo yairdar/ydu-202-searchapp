@@ -48,4 +48,8 @@ tasks:
   run-server:
     desc: run server in pdm __pypackages__
     cmds: [{task: run-server-here}]
-  
+
+  resolve-deps:
+    desc: install required dependencies
+    cmds:
+    - pip install -r req.txt
