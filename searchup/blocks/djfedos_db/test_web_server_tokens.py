@@ -76,3 +76,4 @@ def test_get_suggestions():
     assert data["limit"] == 10
     assert data["result"] == ['symptomatic']
 
+# add get

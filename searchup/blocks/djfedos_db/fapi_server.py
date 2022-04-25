@@ -138,6 +138,8 @@ def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
     return {"we search in ONE collection now. prefix": prefix}
 
 
+
+
 def main():
     uvicorn.run(app, host="0.0.0.0", port=18000)
 
