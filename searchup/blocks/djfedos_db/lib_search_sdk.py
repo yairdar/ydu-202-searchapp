@@ -1,10 +1,12 @@
+from pathlib import Path
+
 # internal methods:
 
 def init_db():
     return {}
 
 
-def add_to_db(mdb:dict, token:str):
+def add_to_db(mdb:dict, token:str, dump_path:str='mdb_dump'):
     token_added = False
     cur = mdb
     for char in token:
@@ -14,6 +16,15 @@ def add_to_db(mdb:dict, token:str):
     if not None in cur:
         cur[None] = None
         token_added = True
+    # there is a problem with dump from here, if token is already dumped before, there will be dupes
+    # dump of whole db on each addition of a token is time-greedy to extreme
+    # and dupe check as well
+    # please advice
+    if token_added:
+        dump_file_path = dump_path + '/token_db.txt'
+        with open(dump_file_path, 'a') as dump_file:
+            token += '\n'
+            dump_file.write(token)
     return token_added
 
 """
@@ -61,7 +72,7 @@ O(n) where n is a number of characters in a prefix
 
 # iterative implementation of trie traversal with a branch buffer
 
-def iterate_suffixes(mdb: dict):
+def iterate_suffixes(mdb:dict):
     suffixes = []
     branch_buffer = {}
 
@@ -171,6 +182,22 @@ def load_db(path:str=None):
         for itoken in itokens:
             add_to_db(mdb=mdb, token=itoken)
     return mdb
+
+
+def dump_db(mdb:dict, path:str='mdb_dump'):
+    """
+    this method dumps the content of the whole token db from memory to the text file
+    one token per line of the file
+    by default the database dumps into the folder call mdb_dump
+    """
+    dump_file_name = '/token_db.txt'
+    token_iterator = iterate_suffixes(mdb=mdb)
+    dump_file_path = path + dump_file_name
+    Path(dump_file_path).absolute().parent.mkdir(exist_ok=True, parents=True)
+    with open(dump_file_path, 'w') as dump_file:
+        for token in token_iterator:
+            token += '\n'
+            dump_file.write(token)
 
 
 def get_suggestions(mdb:dict, prefix:str, limit:int=10):
