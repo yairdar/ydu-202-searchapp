@@ -16,15 +16,17 @@ def add_to_db(mdb:dict, token:str, dump_path:str='mdb_dump'):
     if not None in cur:
         cur[None] = None
         token_added = True
-    # there is a problem with dump from here, if token is already dumped before, there will be dupes
-    # dump of whole db on each addition of a token is time-greedy to extreme
-    # and dupe check as well
-    # please advice
+    """
+    this feature appears highly inconvenient and should be spared for a scheduled database dump instead
+    so now it is disabled
+    
     if token_added:
         dump_file_path = dump_path + '/token_db.txt'
+        Path(dump_file_path).absolute().parent.mkdir(exist_ok=True, parents=True)
         with open(dump_file_path, 'a') as dump_file:
             token += '\n'
             dump_file.write(token)
+    """
     return token_added
 
 """

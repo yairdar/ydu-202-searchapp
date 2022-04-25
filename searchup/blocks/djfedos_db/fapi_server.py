@@ -23,6 +23,10 @@ class DjfedosDbFacade:
     def load_db(self, path: str):
         self._db = self.lib_search_sdk.load_db(path=path)
         return self
+
+    def dump_db(self, path: str):
+        self.lib_search_sdk.dump_db(self._db, path)
+        return self
     
     def get_suggestions(self, prefix, limit=10):
         res = self.lib_search_sdk.get_suggestions(self._db, prefix=prefix, limit=limit)
@@ -52,8 +56,18 @@ def read_root():
 
 @app.get("/load_db/{path}")
 def load_db(path: str, q: Optional[str] = None):
+    # here is a workaround to load db from folders
+    if q:
+        path += '/' + q
+    # so load them like this: /load_db/%folder_name%?q=%rest_of_the_path%
     _impl_db.load_db(path=path)
     resp = {"path": path, "len": len(_impl_db._db)}
+    return resp
+
+@app.get("/dump_db/{path}")
+def dump_db(path: str):
+    _impl_db.dump_db(path)
+    resp = {"path": path}
     return resp
 
 @app.get("/add_to_db/{token}")

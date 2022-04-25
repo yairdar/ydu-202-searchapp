@@ -174,6 +174,8 @@ def test_dump_db_custom_path():
 
     assert actual_file_content == expected_file_content
 
+"""
+this feature is disabled and the test os disabled too
 
 def test_add_to_db_dumps():
     #arrange
@@ -189,4 +191,4 @@ def test_add_to_db_dumps():
             actual_file_content.add(line)
 
     assert test_token in actual_file_content
-
+"""
