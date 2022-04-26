@@ -23,7 +23,7 @@ class CollectionsManager:
             return p
         else:
             print("Exists", p.exists())
-            return p
+            return None
 
     def list_collections(self):
         res = list(self.wdir_p.iterdir())
