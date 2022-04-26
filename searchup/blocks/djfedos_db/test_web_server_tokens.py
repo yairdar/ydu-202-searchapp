@@ -32,6 +32,31 @@ def test_load_db():
     assert data["len"] == 26
 
 
+def test_dump_db():
+    # arrange
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from fapi_server import app
+    client = TestClient(app)
+    # see load_db method tweak to take any file path if needed
+    client.get("/load_db/tests?q=tokens.txt")
+    expected_dump_content = {'marsaba', 'maramba', 'man', 'may', 'bar', 'baron', 'banya', 'raba', 'rab'}
+
+    # act
+    response = client.get('/dump_db/api_test_db_dump')
+    data = response.json()
+    actual_dump_content = set()
+    with open('api_test_db_dump/token_db.txt', 'r') as dump_file:
+        for line in dump_file:
+            line = line.strip()
+            actual_dump_content.add(line)
+
+    # assert
+    assert response.status_code == 200
+    assert data["path"] == 'api_test_db_dump'
+    assert actual_dump_content == expected_dump_content
+
+
 def test_add_to_db():
     # arrange
     from fastapi import FastAPI

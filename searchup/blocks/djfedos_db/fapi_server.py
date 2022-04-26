@@ -24,6 +24,10 @@ class DjfedosDbFacade:
     def load_db(self, path: str):#read file
         self._db = self.lib_search_sdk.load_db(path=path)
         return self
+
+    def dump_db(self, path: str):
+        self.lib_search_sdk.dump_db(self._db, path)
+        return self
     
     def get_suggestions(self, prefix, limit=10):
         res = self.lib_search_sdk.get_suggestions(self._db, prefix=prefix, limit=limit)
@@ -54,10 +58,19 @@ def read_root():
 
 @app.get("/load_db/{path}")
 def load_db(path: str, q: Optional[str] = None):
-    print("Get load_db from fapi server", path)
+    # here is a workaround to load db from folders
+    if q:
+        path += '/' + q
+    # so load them like this: /load_db/%folder_name%?q=%rest_of_the_path%
     _impl_db.load_db(path=path)
     resp = {"path": path, "len": len(_impl_db._db)}
 
+    return resp
+
+@app.get("/dump_db/{path}")
+def dump_db(path: str):
+    _impl_db.dump_db(path)
+    resp = {"path": path}
     return resp
 
 @app.get("/add_to_db/{token}")
@@ -83,6 +96,70 @@ def read_item(prefix: str, limit: Optional[int] = 10):
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
     return {"item_id": item_id}
+
+
+# end points to work with collection
+# --- collections API ---
+
+
+@app.post("/collections/set_item/{item_name_id}")
+def set_collection_item(item_name_id):
+    """
+    to add a new collection to collections we go here
+    to initialize an empty collection as well
+    """
+    print(f"set collection: item_name_id: {item_name_id}")
+    return {"set collection: item_name_id": item_name_id}
+
+
+@app.get("/collections/get_item/{item_name_id}")
+def get_collection_item(item_name_id):
+    """
+    to get the list of our collections we go here
+    """
+    print(f"get collection. item_name_id: {item_name_id}")
+    return {"get collection. item_name_id": item_name_id}
+
+
+@app.get("/collections/search/{prefix}")
+def search_in_all_collections(prefix):
+    """
+    to search through all collections we go here
+    """
+    print(f"we search in ALL collections now. prefix: {prefix}")
+    return {"we search in ALL collections now. prefix": prefix}
+
+
+# --- items API ---
+
+
+@app.post("/collection/{item_name_id}/set_item/{item_token}")
+def set_item(item_name_id, item_token):
+    """
+    to add an item to collection we go here
+    """
+    print(f"we set item to collection {item_name_id}. item_token: {item_token}")
+    return {"we set item to collection. item_token": item_token}
+
+
+@app.get("/collection/{item_name_id}/get_item/{item_token}")
+def get_item(item_name_id, item_token):
+    """
+    to get an item from collection we go here
+    """
+    print(f"we get item from collection {item_name_id}. item_token: {item_token}")
+    return {"we get item from collection. item_token": item_token}
+
+
+@app.get("/collection/{item_name_id}/get_suggestions/{prefix}")
+def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
+    """
+    to search through collection we go here
+    it corresponds to get_suggestions method that we had before
+    (calling function, not restful, but we'll call it...)
+    """
+    print(f"we search in ONE collection {item_name_id} with limit {limit} now. prefix: {prefix}")
+    return {"we search in ONE collection now. prefix": prefix}
 
 
 def main():
