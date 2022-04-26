@@ -18,3 +18,8 @@ def test_add_collection():
     # assert
     assert pathlib.Path.is_dir()
     pathlib.Path.is_file()
+
+
+def test_benchmark_load_db(tmpdir):
+    tfk = TokensFileCreator(tmpdir)
+    bench_file = tfk.create_token_file(num_lines, max_length)
