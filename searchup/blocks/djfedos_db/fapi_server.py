@@ -1,7 +1,12 @@
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI
-import lib_search_sdk
+from pywebio.platform.fastapi import asgi_app
+
+from . import lib_search_sdk
+from . import suggestions_ui
+from . import chat_ui
+
 
 app = FastAPI()
 
@@ -34,7 +39,7 @@ class DjfedosDbFacade:
     
 _impl_db = DjfedosDbFacade()
 
-@app.get("/")
+@app.get("/info")
 def read_root():
     res =  {
         "msg": {"Hello": "World"},
@@ -153,6 +158,14 @@ def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
 
 
 def main():
+    web_py_app = asgi_app(lambda: suggestions_ui.main_loop())
+    web_py_app2 = asgi_app(lambda: chat_ui.main)
+    app.mount("/", web_py_app)
+    from pywebio.platform.fastapi import webio_routes
+
+    app.mount("/tool", FastAPI(routes=webio_routes(suggestions_ui.main_loop)))
+    # app.mount("/o", web_py_app2)
+    # app.add_url_rule('/', 'webio_view', webio_view(suggestions_ui.main_loop), methods=['GET', 'POST', 'OPTIONS'])
     uvicorn.run(app, host="0.0.0.0", port=18000)
 
 
