@@ -1,2 +1,5 @@
 uvicorn
 fastapi
+pywebio
+typer
+websockets

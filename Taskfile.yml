@@ -53,3 +53,9 @@ tasks:
     desc: install required dependencies
     cmds:
     - pip install -r req.txt
+
+  server-run-dev:
+    desc: run search-up server in development mode
+    cmds:
+    - python searchup/blocks/djfedos_db/fapi_server.py
+ 
