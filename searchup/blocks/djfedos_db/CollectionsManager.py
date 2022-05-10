@@ -12,14 +12,14 @@ class CollectionsManager:
         Path(self.wdir_p, name).mkdir(exist_ok=True, parents=True)
         p = Path(name)  # correct path
         #(p / f"{kind}.txt").write_text("")
-
+        return p.name
 
     def get_collection(self, name):
         p = Path("__wdir", name)
         #print(p)
         if p.exists():
             print("Exists", p)
-            return p
+            return p.name
         else:
             print("Doesn't exist")
             return None
@@ -47,14 +47,9 @@ def test_add_collection(tmpdir):
     col = CollectionsManager(tmpdir)
     name = "tmp_dir_test"
     p = Path(tmpdir, name)
-    # act
-    # print(" print path", p)
-    # print("print tmpdir", tmpdir)
-    # print("print exist", p.exists())
     col.add_collection(name)
-    # assert
-    # print("print exist", p.exists())
     assert p.exists()
+
 
 if __name__ == '__main__':
     name = "__wdir"
