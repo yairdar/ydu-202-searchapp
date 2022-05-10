@@ -8,11 +8,11 @@ class CollectionsManager:
         self.wdir_p = Path(path_to_wdir)
         self.wdir_p.mkdir(exist_ok=True, parents=True)
 
-    def add_collection(self, name, kind='tokens_trie'):# create new folder if nor exist
+    def add_collection(self, name, kind='tokens_trie'):
         Path(self.wdir_p, name).mkdir(exist_ok=True, parents=True)
-        p = Path(name)  # correct path
-        #(p / f"{kind}.txt").write_text("")
+        p = Path(name)
         return p.name
+
 
     def get_collection(self, name):
         p = Path("__wdir", name)
@@ -35,7 +35,7 @@ def test_list_collection(tmpdir):
     col.add_collection(name = "one")
     col.add_collection(name = "two")
     col.add_collection(name = "three")
-    expected_collections = {Path(tmpdir, "one"), Path(tmpdir, "two"), Path(tmpdir, "Three")}
+    expected_collections = {Path(tmpdir, "one"), Path(tmpdir, "two"), Path(tmpdir, "three")}
     # act
     actual = set(col.list_collections())
     # assert
@@ -47,14 +47,12 @@ def test_add_collection(tmpdir):
     col = CollectionsManager(tmpdir)
     name = "tmp_dir_test"
     p = Path(tmpdir, name)
+    # act
     col.add_collection(name)
+    # assert
     assert p.exists()
 
 
 if __name__ == '__main__':
     name = "__wdir"
     col = CollectionsManager(name)
-    #col.add_collection("name")
-    #col.get_collection("name")
-    #col.get_collection("__some")
-    #col.list_collections()
