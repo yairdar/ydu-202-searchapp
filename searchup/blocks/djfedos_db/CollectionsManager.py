@@ -1,10 +1,12 @@
-import pathlib
+
 from pathlib import Path
 
 
 class CollectionsManager:
 
-    def __init__(self, path_to_wdir = Path.cwd()):
+    def __init__(self, path_to_wdir = None):
+        if path_to_wdir == None:
+            path_to_wdir = Path.cwd()
         self.wdir_p = Path(path_to_wdir)
         self.wdir_p.mkdir(exist_ok=True, parents=True)
 
@@ -25,7 +27,10 @@ class CollectionsManager:
             return None
 
     def list_collections(self):
-        res = list(self.wdir_p.iterdir())
+        res = []
+        for i in self.wdir_p.iterdir():
+            if i.is_dir():
+                res.append(i)
         return res
 
 
@@ -51,6 +56,17 @@ def test_add_collection(tmpdir):
     col.add_collection(name)
     # assert
     assert p.exists()
+
+# @app.post("/collections/set_item/{item_name_id}")
+# def set_collection_item(item_name_id):
+#   ...
+#
+# @app.get("/collections/get_item/{item_name_id}")
+# def get_collection_item(item_name_id):
+#    ...
+#
+# @app.get("/collections/list")
+# def list_collections(prefix):
 
 
 if __name__ == '__main__':

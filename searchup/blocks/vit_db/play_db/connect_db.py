@@ -29,7 +29,7 @@ def create_table():
         cursor = connection.cursor()
         # SQL-for create new table
         # Id INT PRIMARY  KEY  AUTO_INCREMENT
-        create_table_query = '''CREATE TABLE third_part_movies
+        create_table_query = '''CREATE TABLE new_Table
                               (Id SERIAL PRIMARY  KEY,
                               Name TEXT NOT NULL,
                               Year_date date,
@@ -62,8 +62,8 @@ def add_row(movie, id):
         cursor = connection.cursor()
         # SQL-for fill new row
 
-        print(f""" INSERT INTO third_part_movies (id, name, year_date, budget,revenue,vote_average) VALUES  ('{movie.name}', {movie.year_date}, {movie.budget}, {movie.revenue}, {movie.vote_average})""")
-        insert_query = f""" INSERT INTO third_part_movies (id, name, year_date, budget,revenue,vote_average) VALUES  ({id},'{movie.name}', '{movie.year_date}', {movie.budget}, {movie.revenue}, {movie.vote_average})"""
+        #print(f""" INSERT INTO third_part_movies (id, name, year_date, budget,revenue,vote_average) VALUES  ('{movie.name}', {movie.year_date}, {movie.budget}, {movie.revenue}, {movie.vote_average})""")
+        insert_query = f""" INSERT INTO new_Table (id, name, year_date, budget,revenue,vote_average) VALUES  ({id},'{movie.name}', '{movie.year_date}', {movie.budget}, {movie.revenue}, {movie.vote_average})"""
         cursor.execute(insert_query)
         connection.commit()
         print(f"Data add successfully number of row {id} ")
@@ -86,7 +86,7 @@ def fill_db(file_name_csv, first_index, limit):
             if count == limit:
                 break
             else:
-                if count == 0 or count < first_index:
+                if count == 0 or count < first_index or row[14] == None:
                     count += 1
                 else:
 
@@ -98,7 +98,7 @@ def fill_db(file_name_csv, first_index, limit):
                         revenue=int(row[15]),
                         vote_average=float(row[22])
                     )
-                    if movie.budget == 0:
+                    if movie.budget == 0 or movie.revenue == 0:
                         count += 1
                     else:
                         count += 1
@@ -119,6 +119,6 @@ if __name__ == "__main__":
 
     #add_row(movie)
     #fill_db(file_name_csv, 100, 300)# When fill the table don't forget change table name
-    fill_db(file_name_csv, 500,600)# When fill the table don't forget change table name
+    fill_db(file_name_csv,2,100)# When fill the table don't forget change table name
 
 
