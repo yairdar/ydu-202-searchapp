@@ -3,7 +3,7 @@ from typing import Optional
 import uvicorn
 from fastapi import FastAPI
 import lib_search_sdk
-
+from collections_manager import CollectionsManager
 app = FastAPI()
 
 
@@ -34,6 +34,8 @@ class DjfedosDbFacade:
         return res
     
 _impl_db = DjfedosDbFacade()
+#col = CollectionsManager("web_api_wdir")
+col = CollectionsManager()
 
 @app.get("/")
 def read_root():
@@ -162,6 +164,18 @@ def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
     return {"we search in ONE collection now. prefix": prefix}
 
 
+@app.get("/collections/add_item/{item_name_id}")
+def add_collection_item(item_name_id):
+    col.add_collection(item_name_id)
+    return(item_name_id)
+
+@app.get("/collections/get_item/{item_name_id}")
+def get_collection_item(item_name_id):
+    return (col.get_collection(item_name_id))
+
+@app.get("/collections/list")
+def list_collections():
+    return (col.list_collections())
 
 
 def main():
