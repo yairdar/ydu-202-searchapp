@@ -24,15 +24,16 @@ def create_table():
                                       password="root",
                                       host="127.0.0.1",
                                       port="5432",
-                                      database="movie_db")
+                                      database="join_db")
 
         cursor = connection.cursor()
         # SQL-for create new table
         # Id INT PRIMARY  KEY  AUTO_INCREMENT
-        create_table_query = '''CREATE TABLE new_Table
+        create_table_query = '''CREATE TABLE temp_genres
                               (Id SERIAL PRIMARY  KEY,
                               Name TEXT NOT NULL,
                               Year_date date,
+                              genres integer,
                               Budget integer,
                               revenue bigint,
                               vote_average float
@@ -63,10 +64,10 @@ def add_row(movie, id):
         # SQL-for fill new row
 
         #print(f""" INSERT INTO third_part_movies (id, name, year_date, budget,revenue,vote_average) VALUES  ('{movie.name}', {movie.year_date}, {movie.budget}, {movie.revenue}, {movie.vote_average})""")
-        insert_query = f""" INSERT INTO new_Table (id, name, year_date, budget,revenue,vote_average) VALUES  ({id},'{movie.name}', '{movie.year_date}', {movie.budget}, {movie.revenue}, {movie.vote_average})"""
+        insert_query = f""" INSERT INTO source (id, name, year_date, genres, budget,revenue,vote_average) VALUES  ({id},'{movie.name}', '{movie.year_date}', {movie.budget}, {movie.revenue}, {movie.vote_average})"""
         cursor.execute(insert_query)
         connection.commit()
-        print(f"Data add successfully number of row {id} ")
+        #print(f"Data add successfully number of row {id} ")
 
     except (Exception, Error) as error:
         print("Error with PostgreSQL", error)
@@ -94,15 +95,16 @@ def fill_db(file_name_csv, first_index, limit):
                         name=row[8],
                         year_date=data_convert(row[14]),
                         budget=int(row[2]),
-                        #genres=row[3],
+                        #genres=row[],# dict(return )
                         revenue=int(row[15]),
                         vote_average=float(row[22])
                     )
+                    print(row[3])
                     if movie.budget == 0 or movie.revenue == 0:
                         count += 1
                     else:
                         count += 1
-                        add_row(movie, count)
+                        #add_row(movie, count)
 
 def data_convert(str_date):
     dateString = str_date
@@ -114,11 +116,11 @@ def data_convert(str_date):
 if __name__ == "__main__":
     file_name_csv = "movies_metadata.csv"
 
-    #create_table() # create table with need column
+    create_table() # create table with need column
 
 
     #add_row(movie)
     #fill_db(file_name_csv, 100, 300)# When fill the table don't forget change table name
-    fill_db(file_name_csv,2,100)# When fill the table don't forget change table name
+    fill_db(file_name_csv,2,25)# When fill the table don't forget change table name
 
 
