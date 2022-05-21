@@ -12,10 +12,13 @@ class Movie(BaseModel):
     name: str
     year_date: date
     budget: int #2
-    #genres: str#3
+    #genres: dict#3
     revenue: int #15
     vote_average: str #22
 
+def data_convert(str_date):
+    dateString = str_date
+    dateFormatter = "%Y-%m-%d"
 
 def create_table():
     try:
@@ -95,7 +98,7 @@ def fill_db(file_name_csv, first_index, limit):
                         name=row[8],
                         year_date=data_convert(row[14]),
                         budget=int(row[2]),
-                        #genres=row[],# dict(return )
+                        #genres=row(int)["id"],# dict(return )
                         revenue=int(row[15]),
                         vote_average=float(row[22])
                     )
@@ -121,6 +124,6 @@ if __name__ == "__main__":
 
     #add_row(movie)
     #fill_db(file_name_csv, 100, 300)# When fill the table don't forget change table name
-    fill_db(file_name_csv,2,25)# When fill the table don't forget change table name
+    fill_db(file_name_csv, 2, 25)# When fill the table don't forget change table name
 
 
