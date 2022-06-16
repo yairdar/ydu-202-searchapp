@@ -34,22 +34,50 @@ tasks:
     desc: run prebuild tests
     cmds:
     - task: test-here
+    - task: test-djfedos-srv
 
   test-here:
     desc: run prebuild tests in active venv
     cmds:
     - pytest -s -v tests
 
+  test-djfedos-srv:
+    desc: test dj fedos service
+    dir: searchup/blocks/djfedos_db
+    cmds: [pytest -s -v .]
+
   run-server-here:
     desc: run server in active venv
     cmds:
     - python searchup/sup_cli.py start-server
+  
+  server-run-dev:
+    desc: run search-up server in development mode
+    cmds:
+    - python searchup/blocks/djfedos_db/fapi_server.py
 
   run-server:
     desc: run server in pdm __pypackages__
     cmds: [{task: run-server-here}]
 
+
   resolve-deps:
+    desc: resolve dependancies
+    cmds:
+      - task setup-dev-venv
+      - task run-task-in-dev_venv cmd='task install-pip-reqs-here'
+
+  install-pip-reqs-here:
     desc: install required dependencies
     cmds:
     - pip install -r req.txt
+
+  run-task-in-dev_venv:
+    desc: run task in {{.dev_venv}}
+    cmds:
+      - conda run -n {{.dev_venv}} {{.cmd}}
+
+  ci-flow:
+    desc: ci-flow in venv
+    cmds:
+    - task setup-dev-venv
