@@ -66,16 +66,13 @@ tasks:
     - pip install -r req.txt
 
 
-  run-task:
-    desc: _
-    var:
-      _cmd: '{{trimPrefix "task " .cmd}}'
-      venv: '{{default .dev_venv .venv}}'
+  run-task-in-dev_venv:
+    desc: run task in {{.dev_venv}}
     cmds:
-      - conda run -n {{.venv}} task {{._cmd}}
+      - conda run -n {{.dev_venv}} {{.cmd}}
 
   ci-flow:
     desc: ci-flow in venv
     cmds:
     - task setup-dev-venv
-    - task run-task cmd='task test'
+    - task run-task-in-dev_venv cmd='task test'
