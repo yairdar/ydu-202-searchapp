@@ -64,3 +64,18 @@ tasks:
     desc: install required dependencies
     cmds:
     - pip install -r req.txt
+
+
+  run-task:
+    desc: _
+    var:
+      _cmd: '{{trimPrefix "task " .cmd}}'
+      venv: '{{default .dev_venv .venv}}'
+    cmds:
+      - conda run -n {{.venv}} task {{._cmd}}
+
+  ci-flow:
+    desc: ci-flow in venv
+    cmds:
+    - task setup-dev-venv
+    - task run-task cmd='task test'
