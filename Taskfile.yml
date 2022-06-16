@@ -60,11 +60,17 @@ tasks:
     desc: run server in pdm __pypackages__
     cmds: [{task: run-server-here}]
 
+
   resolve-deps:
+    desc: resolve dependancies
+    cmds:
+      - task setup-dev-venv
+      - task run-task-in-dev_venv cmd='task install-pip-reqs-here'
+
+  install-pip-reqs-here:
     desc: install required dependencies
     cmds:
     - pip install -r req.txt
-
 
   run-task-in-dev_venv:
     desc: run task in {{.dev_venv}}
@@ -75,4 +81,3 @@ tasks:
     desc: ci-flow in venv
     cmds:
     - task setup-dev-venv
-    - task run-task-in-dev_venv cmd='task test'
