@@ -1,8 +1,9 @@
+from pathlib import Path
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI
 import lib_search_sdk
-
+from collections_manager import CollectionsManager
 app = FastAPI()
 
 
@@ -12,15 +13,15 @@ class DjfedosDbFacade:
     """
     
     def __init__(self) -> None:
-        
-        self.lib_search_sdk = lib_search_sdk
+
+        self.lib_search_sdk = lib_search_sdk    #what is it
         self._db: dict = self.lib_search_sdk.init_db()
         
     def add_to_db(self, token):
         self.lib_search_sdk.add_to_db(self._db, token)
         return self
         
-    def load_db(self, path: str):
+    def load_db(self, path: str):#read file
         self._db = self.lib_search_sdk.load_db(path=path)
         return self
 
@@ -33,10 +34,12 @@ class DjfedosDbFacade:
         return res
     
 _impl_db = DjfedosDbFacade()
+col = CollectionsManager("web_api_wdir")
+#col = CollectionsManager()
 
 @app.get("/")
 def read_root():
-    res =  {
+    res = {
         "msg": {"Hello": "World"},
         "menu": {
             "recreate": [
@@ -51,6 +54,7 @@ def read_root():
             ]
         }
     }
+
     return res
 
 
@@ -62,6 +66,7 @@ def load_db(path: str, q: Optional[str] = None):
     # so load them like this: /load_db/%folder_name%?q=%rest_of_the_path%
     _impl_db.load_db(path=path)
     resp = {"path": path, "len": len(_impl_db._db)}
+
     return resp
 
 @app.get("/dump_db/{path}")
@@ -72,6 +77,7 @@ def dump_db(path: str):
 
 @app.get("/add_to_db/{token}")
 def add_to_db(token: str, q: Optional[str] = None):
+    print("add_to_db",token)
     _impl_db.add_to_db(token=token)
     resp =  {"token": token, "len": len(_impl_db._db)}
     return resp
@@ -82,6 +88,12 @@ def read_item(prefix: str, limit: Optional[int] = 10):
     resp = {"prefix": prefix, "limit": limit, "result": res}
     return resp
 
+@app.get("/get_suggestions/{prefix}")
+def read_item(prefix: str, limit: Optional[int] = 10):
+    res = _impl_db.get_suggestions(prefix=prefix, limit=limit)
+    resp = {"prefix": prefix, "limit": limit, "result": res}
+    return resp
+# create def for fined movies
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int):
@@ -152,8 +164,43 @@ def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
     return {"we search in ONE collection now. prefix": prefix}
 
 
+@app.get("/collections/add_item/{item_name_id}")
+def add_collection_item(item_name_id):
+    col.add_collection(item_name_id)
+    return(item_name_id)
+
+@app.get("/collections/get_item/{item_name_id}")
+def get_collection_item(item_name_id):
+    return (col.get_collection(item_name_id))
+
+@app.get("/collections/list")
+def list_collections():
+    return (col.list_collections())
+
+
 def main():
     uvicorn.run(app, host="0.0.0.0", port=18000)
+
+# create a new director
+def add_new_dir():
+    filepath = Path("temp/test.txt")
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+
+def get_dir(): #get a home dir
+    home = Path.home()
+    return home
+
+
+def create_file():  #or create a new file each time?
+    myfile = Path(Path.home(), "file.txt")
+    myfile.touch(exist_ok=True)
+    f = open(myfile)
+
+
+def get_list_dir():# get a Listing subdirectories:
+    p = Path('.')
+    return [x for x in p.iterdir() if x.is_dir()]
 
 
 if __name__ == "__main__":
