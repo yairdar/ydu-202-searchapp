@@ -34,8 +34,8 @@ class DjfedosDbFacade:
         return res
     
 _impl_db = DjfedosDbFacade()
-#col = CollectionsManager("web_api_wdir")
-col = CollectionsManager()
+col = CollectionsManager("web_api_wdir")
+#col = CollectionsManager()
 
 @app.get("/")
 def read_root():
