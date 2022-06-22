@@ -163,25 +163,28 @@ def search_in_one_collection(item_name_id, prefix, limit: Optional[int] = 10):
     print(f"we search in ONE collection {item_name_id} with limit {limit} now. prefix: {prefix}")
     return {"we search in ONE collection now. prefix": prefix}
 
-
+  
 @app.get("/collections/add_item/{item_name_id}")
 def add_collection_item(item_name_id):
     col.add_collection(item_name_id)
     return(item_name_id)
 
+  
 @app.get("/collections/get_item/{item_name_id}")
 def get_collection_item(item_name_id):
     return (col.get_collection(item_name_id))
 
+  
 @app.get("/collections/list")
 def list_collections():
     return (col.list_collections())
 
-
+  
 def main():
     uvicorn.run(app, host="0.0.0.0", port=18000)
 
-# create a new director
+    
+# create a new directory
 def add_new_dir():
     filepath = Path("temp/test.txt")
     filepath.parent.mkdir(parents=True, exist_ok=True)
