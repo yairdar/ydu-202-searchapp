@@ -16,6 +16,7 @@ class Movie(BaseModel):
     revenue: int #15
     vote_average: str #22
 
+
 def data_convert(str_date):
     dateString = str_date
     dateFormatter = "%Y-%m-%d"
@@ -32,15 +33,15 @@ def create_table():
         cursor = connection.cursor()
         # SQL-for create new table
         # Id INT PRIMARY  KEY  AUTO_INCREMENT
-        create_table_query = '''CREATE TABLE temp_genres
-                              (Id SERIAL PRIMARY  KEY,
-                              Name TEXT NOT NULL,
-                              Year_date date,
-                              genres integer,
-                              Budget integer,
-                              revenue bigint,
-                              vote_average float
-                              ); '''
+        create_table_query = '''create table movies(
+                id bigserial primary key,
+                name  VARCHAR(20),
+                year_date date,
+                budget int,
+                revenue int8,
+                vote_average numeric,
+                genre_id integer REFERENCES genres (genre_id) on delete set null
+                ); '''
 
         cursor.execute(create_table_query)
         connection.commit()
@@ -96,7 +97,7 @@ def fill_db(file_name_csv, first_index, limit):
 
                     movie: Movie = Movie(
                         name=row[8],
-                        year_date=data_convert(row[14]),
+                        year_date=date_convert(row[14]),
                         budget=int(row[2]),
                         #genres=row(int)["id"],# dict(return )
                         revenue=int(row[15]),
@@ -109,7 +110,7 @@ def fill_db(file_name_csv, first_index, limit):
                         count += 1
                         #add_row(movie, count)
 
-def data_convert(str_date):
+def date_convert(str_date):
     dateString = str_date
     dateFormatter = "%Y-%m-%d"
 

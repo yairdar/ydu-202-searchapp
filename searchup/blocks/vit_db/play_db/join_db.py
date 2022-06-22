@@ -81,7 +81,7 @@ def fill_db(file_name_csv, first_index, limit):
                 if count == 0 or count < first_index or row[14] == None:
                     count += 1
                 else:
-                    read_gener(row[3])
+                    read_genre(row[3])
                     movie: Movie = Movie(
                         name=row[8],
                         year_date=data_convert(row[14]),
@@ -96,18 +96,6 @@ def fill_db(file_name_csv, first_index, limit):
                     else:
                         count += 1
                         #add_row(movie, count)
-def read_gener(gener):
-
-    d = {}
-    gener_list = eval(gener)
-    for i in gener_list:
-        if i['id'] not in d:
-            d[i['id']] = [i['name']]
-        else:
-            d[i['id']].append(i['name'])
-
-    print(d)
-    return
 
 if __name__ == "__main__":
     file_name_csv = "movies_metadata.csv"
