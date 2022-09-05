@@ -136,3 +136,8 @@ dmypy.json
 
 .idea
 com_channel101
+
+# more items on top
+mdb_dump
+my_db_dump
+api_test_db_dump
